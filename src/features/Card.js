@@ -1,7 +1,7 @@
 import React from 'react';
 // Add import statements below
 import {useSelector, useDispatch } from 'react-redux'
-import {selectVisibleIDs, flipCard, selectMatchedIDs} from './boardSlice.js'
+import {selectVisibleIDs, flipCard, selectMatchedIDs, resetCards} from './boardSlice.js'
 
 //let cardLogo = "https://static-assets.codecademy.com/Courses/Learn-Redux/matching-game/codecademy_logo.png";
 //<img src={cardLogo} className="logo-placeholder" alt="Card option" />
@@ -38,7 +38,10 @@ export const Card = ({ id, contents }) => {
     click = () => {};
   }*/
 
-  
+  if ( visibleIDs.includes(id) && visibleIDs.length === 2){
+    cardStyle = 'no-match'
+  }
+
   // implement card id array membership check
   if (matchedIDs.includes(id)) {
     cardStyle = 'matched';
@@ -47,8 +50,13 @@ export const Card = ({ id, contents }) => {
   
   // implement number of flipped cards check
   if (visibleIDs.length === 2) {
-    click = () => {};
+    click = () => {
+      dispatch(resetCards())
+      flipHandler(id)
+    };
   }
+
+
 
   return (
     <button onClick={click} className={`card ${cardStyle}`}>
